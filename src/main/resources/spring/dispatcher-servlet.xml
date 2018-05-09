@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans     
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd     
+    http://www.springframework.org/schema/context     
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+    <mvc:annotation-driven>  
+	    <mvc:argument-resolvers>  
+	        <bean class="com.cjy.qiquan.utils.SessionScopeMethodArgumentResolver" />  
+	    </mvc:argument-resolvers>  
+	</mvc:annotation-driven>  
+	<mvc:default-servlet-handler />
+	<!-- 扫描包 -->
+	<context:component-scan base-package="com.cjy.qiquan.controller" />
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJackson2HttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<bean id="mappingJackson2HttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+				 <value>text/json;charset=UTF-8</value>
+				<!--<value>application/json;charset=UTF-8</value> -->
+			</list>
+		</property>
+	</bean>
+     
+     <!-- 配置JSP视图 -->
+     <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+       <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/web/"/>
+        <property name="suffix" value=".jsp"/>      
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="order" value="1"/>
+     </bean>
+	<!-- 配置通用拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/images/**"/>
+			<mvc:exclude-mapping path="/css/**"/>
+			<mvc:exclude-mapping path="/js/**"/>
+			<mvc:exclude-mapping path="/user/images/**"/>
+			<bean class="com.cjy.qiquan.controller.BaseController" name="baseControllerInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<bean id="annotationMethodHandlerExceptionResolver"
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
+		<property name="order" value="0" />
+	</bean>
+	<!-- 
+	<bean id="exceptionResolver" class="com.ejiaren.exception.CustomSimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="/error" />
+	</bean>
+	 -->
+
+	<bean id="handlerExceptionResolver" class="com.cjy.qiquan.exception.ExceptionResolver">
+		<property name="defaultErrorView" value="/error" />
+		<property name="notLoginErrorView" value="/index" />
+		<property name="messageConverters" ref="mappingJackson2HttpMessageConverter" />
+	</bean>
+	
+	
+	<!-- 线程执行器配置，用于任务注册 -->
+	<bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 <property name="corePoolSize" value="1" />
+	 <property name="maxPoolSize" value="2" />
+	 <property name="queueCapacity" value="1000" />
+	</bean>
+	
+	 <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref local="run_on_24_hour" />				
+			</list>
+		</property>
+		<property name="taskExecutor" ref="executor" />
+	</bean>
+	
+	<bean id="run_on_24_hour_job" 
+                 class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduleService" />
+		<property name="targetMethod" value="run_on_24" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="run_on_24_hour" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="run_on_24_hour_job" />
+		</property>
+		<property name="cronExpression">
+			<value>0 5 0 * * ?</value>
+		</property>
+	</bean>
+	
+</beans>

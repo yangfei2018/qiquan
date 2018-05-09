@@ -1,0 +1,92 @@
+<web-app id="qiquan" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>qiquan</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/springmvc-servlet.xml,classpath:proxool.xml</param-value>
+	</context-param>
+	<!-- 该servlet为tomcat,jetty等容器提供,将静态资源映射从/改为/static/目录，如原来访问 http://localhost/foo.css 
+		,现在http://localhost/static/foo.css -->
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/static/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<!-- 取消其自动注册的异常解析器 <init-param> <param-name>detectAllHandlerExceptionResolvers</param-name> 
+			<param-value>false</param-value> </init-param> -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error_404</location>
+	</error-page>
+	<error-page>
+		<error-code>400</error-code>
+		<location>/error_404</location>
+	</error-page>
+	<!-- URL重写filter,用于将访问静态资源http://localhost/foo.css 转为http://localhost/static/foo.css 
+		<filter> <filter-name>UrlRewriteFilter</filter-name> <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class> 
+		<init-param> <param-name>confReloadCheckInterval</param-name> <param-value>60</param-value> 
+		</init-param> <init-param> <param-name>logLevel</param-name> <param-value>DEBUG</param-value> 
+		</init-param> </filter> <filter-mapping> <filter-name>UrlRewriteFilter</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
+	<!-- 覆盖default servlet的/, springmvc servlet将处理原来处理静态资源的映射 -->
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>/index</url-pattern>
+	</servlet-mapping>
+	<!-- 浏览器不支持put,delete等method,由该filter将/blog?_method=delete转换为标准的http delete方法 -->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>springmvc</servlet-name>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>com.cjy.qiquan.encode.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>characterEncoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>enabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- <filter> <filter-name>authentication</filter-name> <filter-class>AppFilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>authentication</filter-name> <url-pattern>/*</url-pattern> 
+		</filter-mapping> -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	<!--project listener -->
+	<listener>
+		<listener-class>com.cjy.qiquan.utils.AppContext</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>index</welcome-file>
+	</welcome-file-list>
+</web-app>
