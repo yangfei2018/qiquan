@@ -86,13 +86,18 @@ thead {
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="HuiTab">
-							
+							<div class="tabBar clearfix">
+								<span <c:if test="${status==0 }">class="current"</c:if> onclick="gohref('customer/withdrawCashlist?status=0')" >未结算</span> <span <c:if test="${status==1 }">class="current"</c:if> onclick="gohref('customer/withdrawCashlist?status=1')" >已结算</span>
+							</div>
 							<div style="padding-top: 10px; overflow: hidden;">
 								<table class="table table-border table-bordered table-hover">
 									<thead>
 										<tr class="active">
 											<th class="active">提现金额（元）</th>
 											<th class="active">申请时间</th>
+											<c:if test="${status==1 }">
+												<th>结算时间</th>
+											</c:if>
 										</tr>
 									</thead>
 									<tbody>
@@ -100,7 +105,9 @@ thead {
 											<tr>
 												<td>${item.amountFormat }</td>
 												<td>${item.createTimeFormat }</td>
-												
+												<c:if test="${status==1 }">
+													<th>${item.clearingTimeFormat }</th>
+												</c:if>
 											</tr>
 										</c:forEach>
 									</tbody>
