@@ -42,6 +42,7 @@ body, th, td, button, input, select, textarea, .radio-box label {
 	margin-left: auto;
 	margin-right: auto;
 	font-size: 16px;
+	margin-top:-20px;
 }
 
 .form-label {
@@ -62,6 +63,10 @@ body, th, td, button, input, select, textarea, .radio-box label {
   min-height: 34px;
 }
 
+.row{
+	margin-top:10px  !important;;
+}
+
 </style>
 <!--[if IE 6]>
 <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
@@ -79,10 +84,12 @@ body, th, td, button, input, select, textarea, .radio-box label {
 		<jsp:include page="../include/nav-breadcrumb.jsp">
 			<jsp:param name="curr" value="询价" />
 		</jsp:include>
-		<div class="Hui-article" style="margin-top: 40px;">
+		<div class="Hui-article" style="margin-top: 20px;">
+			<p class="f-20 text-success" style="width:100%;text-align: center">提示：询价提交过后，30分钟内我们将给予回复，请您留意询价记录！</p>
+			<p class="f-20 text-success" style="width:100%;text-align: center">为了保证询价的可靠性，请确保您账户余额不低于2万。</p>
 			<article class="cl pd-20 pad">
-				<p class="f-20 text-success">提示：询价提交过后，30分钟内我们将给予回复，请您留意询价记录！</p>
-				<p class="f-20 text-success">为了保证询价的可靠性，请确保您账户余额不低于2万。</p>
+				<%--<p class="f-20 text-success">提示：询价提交过后，30分钟内我们将给予回复，请您留意询价记录！</p>
+				<p class="f-20 text-success">为了保证询价的可靠性，请确保您账户余额不低于2万。</p>--%>
 				<p style="color: red; font-size: 18px;">注意：请您填写完整后提交！</p>
 				<form class="form form-horizontal size-L" id="form-article-add">
 					<div class="row cl">
@@ -135,7 +142,7 @@ body, th, td, button, input, select, textarea, .radio-box label {
 						<label class="form-label col-xs-4 col-sm-3"><span
 							class="c-red">*</span>方向：</label>
 						<div class="formControls col-xs-8 col-sm-9">
-							<div class="radio-box size-L">
+							<div class="radio-box size-L" style="padding-left:0">
 								<input type="radio" id="fangx-1" name="buyAndFall" value="1"> <label
 									for="fangx-1">看涨</label>
 							</div>
@@ -169,14 +176,14 @@ body, th, td, button, input, select, textarea, .radio-box label {
 					</div>
 					
 					<div class="row cl ds">
-						<label class="form-label col-xs-4 col-sm-3">每手权利金：</label>
+						<label class="form-label col-xs-4 col-sm-3" style="padding-left:0;">每手权利金：</label>
 						<div class="formControls col-xs-8 col-sm-9">
 							<p class="form-control-static" id="per_amount"></p>
 						</div>
 					</div>
 					
 					<div class="row cl ds">
-						<label class="form-label col-xs-4 col-sm-3">起投权利金：</label>
+						<label class="form-label col-xs-4 col-sm-3" style="padding-left:0;">起投权利金：</label>
 						<div class="formControls col-xs-8 col-sm-9">
 							<p class="form-control-static" id="min_amount"></p>
 						</div>
@@ -327,7 +334,51 @@ body, th, td, button, input, select, textarea, .radio-box label {
 				layer_alert('请先阅读并同意《大赢家产品交易规则》和《大赢家风险揭示书》。');
 				return false;
 			} */
-			
+			var content_html="<table class=\"table table-border table-bordered\" style=\"width:100%;text-align:center\">\n" +
+                "<thead>\n" +
+                "<tr class=\"active\">\n" +
+                "<th class=\"active\">交易所</th>" +
+                "<th class=\"active\">品种</th>" +
+                "<th class=\"active\">交易时间</th>" +
+                "</tr>\n" +
+                "</thead>\n" +
+                "<tbody>\n" +
+                "<tr>\n" +
+                "<td>上期所</td>\n" +
+                "<td>黄金、白银、螺纹钢、铜、铝等</td>\n" +
+                "<td>09：00-11：30<br>\n" +
+                "13：30-15：00 <br>\n" +
+                "21：00-02：30\n" +
+                "</td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td>大商所</td>\n" +
+                "<td>焦炭、豆粕、焦煤、铁矿石等</td>\n" +
+                "<td>09：00-11：30<br>\n" +
+                "13：30-15：00 <br>\n" +
+                "21：00-23：30\n" +
+                "</td>\n" +
+                "</tr>\n" +
+                "<tr>\n" +
+                "<td>郑商所</td>\n" +
+                "<td>白糖、棉花、菜粕、甲醇、玻璃等</td>\n" +
+                "<td>09：00-11：30<br>\n" +
+                "13：30-15：00 <br>\n" +
+                "21：00-02：30\n" +
+                "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td>上证、深证</td>" +
+                "<td>个股、沪深300指、中小板指</td>" +
+                "\<td>09：00-11：30<br>" +
+                "13：00-15：00" +
+                "</td>\n" +
+                "</tr>" +
+                "</tbody>" +
+                "</table><p style='color:red\;padding-left:10px;padding-right:10px;'>" +
+                "注：市价下单需交易员与券商柜台交易，需要一定时效，一般为在您下单后15-30分钟左右下单，具体以实际成交价格为准。\n" +
+                "</p>"+
+				"<div style='text-align: right'><span class='haveread' style='width:100px;height:40px;display:block;background-color:#0f9ae0;line-height:40px;text-align:center;float:right;margin-right:30px;margin-top:20px;color:white;cursor:pointer'>我已阅读</span></div>";
 			$.ajax({
 				type : "post",
 				url : "customer/json/postTrade",
@@ -335,9 +386,25 @@ body, th, td, button, input, select, textarea, .radio-box label {
 				dataType : "json",
 				success : function(rep) {
 					if (rep.result){
-						layer_success(rep.data,function(){
+                        /*layer.open({
+                            type: 1,
+                            skin: 'layui-layer-rim', //加上边框
+                            area: ['420px', '240px'], //宽高
+                            content: '123123'
+                        });*/
+						/*layer_success(rep.data,function(){
 							gohref('customer/xunjialist');
-						});
+						});*/
+                        layer.open({
+                            type: 1,
+                            closeBtn: 0,
+                            skin: 'layui-layer-rim', //加上边框
+                            area: ['700px', '500px'], //宽高
+                            content: content_html
+                        });
+                        $(".haveread").click(function(){
+                            gohref('customer/xunjialist');
+                        });
 					}else{
 						layer_alert(rep.data);
 					}

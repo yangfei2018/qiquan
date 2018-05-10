@@ -19,6 +19,7 @@ public class VOrder extends Order {
 	private String buyerMobile;
 
 	private String buyerPartnerCompanyName;
+	private String buyerHehuoCompanyName;
 
 	private double difAmount;
 
@@ -31,6 +32,7 @@ public class VOrder extends Order {
 		buyerName = res.getString("f_buyerName");
 		buyerMobile = res.getString("f_buyerMobile");
 		buyerPartnerCompanyName = res.getString("f_buyerPartnerCompanyName");
+		buyerHehuoCompanyName = res.getString("f_buyer_hehuo_companyname");
 	}
 
 	public String getBuyerName() {
@@ -112,4 +114,11 @@ public class VOrder extends Order {
 	}
 
 
+	public String getBuyerHehuoCompanyName() {
+		return buyerHehuoCompanyName;
+	}
+
+	public void setBuyerHehuoCompanyName(String buyerHehuoCompanyName) {
+		this.buyerHehuoCompanyName = buyerHehuoCompanyName;
+	}
 }

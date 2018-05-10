@@ -134,7 +134,7 @@ thead {
 								</c:if>
 							</div>
 							<c:if test="${status==1 }">
-							<div style="margin-top: 10px; overflow: hidden;">
+							<%--<div style="margin-top: 10px; overflow: hidden;">
 								<p style="font-weight: 800">交易规则及交易时间</p>
 								<p  style="font-weight: 800">商品类：</p>
 								<p>开盘前下单：开盘后进场交易，接受市价、收盘价下单方式</p>
@@ -195,7 +195,7 @@ thead {
 								<p style="color:red">
 								注：市价下单需交易员与券商柜台交易，需要一定时效，一般为在您下单后15-30分钟左右下单，具体以实际成交价格为准。
 								</p>
-							</div>
+							</div>--%>
 						</c:if>	
 						
 						<c:if test="${status==0 }">
@@ -228,7 +228,7 @@ thead {
 				maxmin : false,
 				shadeClose : true,
 				title : "报价详情",
-				area : [ '500px', '660px' ],
+				area : [ '500px', '680px' ],
 				content : [ 'customer/trade/' + id, 'no' ]
 			})
 		}

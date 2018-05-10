@@ -14,6 +14,7 @@ public class VUser extends User{
 	
 	
 	private String partnerCompanyName;
+	private String pcompanyName;
 	
 
 	public VUser() {
@@ -23,7 +24,7 @@ public class VUser extends User{
 	public VUser(ResultSet res) throws SQLException {
 		super(res);
 		this.partnerCompanyName = res.getString("f_partnerCompanyName");
-		
+		this.pcompanyName = res.getString("f_pcompanyname");
 	}
 
 	public String getPartnerCompanyName() {
@@ -33,8 +34,13 @@ public class VUser extends User{
 	public void setPartnerCompanyName(String partnerCompanyName) {
 		this.partnerCompanyName = partnerCompanyName;
 	}
-	
-	
-	
-	
+
+
+	public String getPcompanyName() {
+		return pcompanyName;
+	}
+
+	public void setPcompanyName(String pcompanyName) {
+		this.pcompanyName = pcompanyName;
+	}
 }

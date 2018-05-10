@@ -54,8 +54,8 @@
 										<li <c:if test="${status==3 }">class="active"</c:if>><a
 											href="gm/userlist?status=3&partnerId=${partnerId }">
 												已认证会员</a></li>
-										<li <c:if test="${status==4 }">class="active"</c:if>><a
-											href="gm/userlist?status=4&partnerId=${partnerId }"> 已激活</a></li>
+										<%--<li <c:if test="${status==4 }">class="active"</c:if>><a
+											href="gm/userlist?status=4&partnerId=${partnerId }"> 已激活</a></li>--%>
 									</ul>
 									<div class="tab-content">
 										<div id="tab-1" class="tab-pane active">
@@ -81,6 +81,7 @@
 															<th>会员账号</th>
 															<th>会员真实姓名</th>
 															<th>归属代理商</th>
+															<th>有限合伙</th>
 															<th>注册时间</th>
 															<th>状态</th>
 															<c:if test="${role_id== 1||role_id==0}">
@@ -98,6 +99,7 @@
 																<td>${item.name }</td>
 																<td>${item.realName }</td>
 																<td>${item.partnerCompanyName }</td>
+																<td>${item.pcompanyName}</td>
 																<td>${item.regTime }</td>
 																<td align="center"><c:choose>
 																		<c:when test="${item.status==1 }">

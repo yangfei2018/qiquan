@@ -104,6 +104,7 @@
 																<th>订单号</th>
 																<th>购买者</th>
 																<th>代理商</th>
+																<th>有限合伙</th>
 																<th>名称</th>
 																<th>代码</th>
 																<th>涨跌</th>
@@ -155,6 +156,7 @@
 																	<td>${item.orderNo }</td>
 																	<td>${item.buyerName }</td>
 																	<td>${item.buyerPartnerCompanyName }</td>
+																	<td>${item.buyerHehuoCompanyName}</td>
 																	<td>${item.productName }</td>
 																	<td>${item.productCode }</td>
 																	<td><c:choose>

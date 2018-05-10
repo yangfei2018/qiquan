@@ -94,7 +94,7 @@ thead {
 									<c:if test="${status==2 }">class="current"</c:if>
 									onclick="gohref('customer/jiaoyilist?status=2')">平仓记录</span> <span
 									<c:if test="${status==3 }">class="current"</c:if>
-									onclick="gohref('customer/jiaoyilist?status=3')">11已结算</span>
+									onclick="gohref('customer/jiaoyilist?status=3')">已结算</span>
 									<span 
 									<c:if test="${status==-1 }">class="current"</c:if>
 									onclick="gohref('customer/jiaoyilist?status=-1')">已取消</span>
@@ -130,6 +130,7 @@ thead {
 												<th class="active">操作</th>
 											</c:if>
 											<c:if test="${status==3}">
+												<th class="active">行权价格（元）</th>
 												<th class="active">结算金额（元）</th>
 												<th class="active">结算时间</th>
 											</c:if>
@@ -201,6 +202,7 @@ thead {
 														</c:choose></td>
 												</c:if>
 												<c:if test="${status==3}">
+													<td>${item.executivePrice}</td>
 													<td>${item.balanceAmountFormat }</td>
 													<td>${item.balanceTimeFormat }</td>
 												</c:if>
@@ -220,7 +222,7 @@ thead {
 						
 						
 						
-						<div style="margin-top: 10px; overflow: hidden;">
+						<div style="margin-top: 10px; overflow: hidden;display:none;">
 								<p style="font-weight: 800">交易规则及交易时间</p>
 								<p  style="font-weight: 800">商品类：</p>
 								<p>开盘前平仓：开盘后进场交易，接受市价、收盘价、挂价交易方式</p>

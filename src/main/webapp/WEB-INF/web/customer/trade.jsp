@@ -79,9 +79,9 @@ div.form-label{
 <body>
 	<article class="page-container">
 		<p class="f-20 text-success">投资有风险，入市须谨慎！</p>
-		<p>以下为券商成交标准:</p>
+		<%--<p>以下为券商成交标准:</p>--%>
 		<form class="form form-horizontal size-L">
-			<div class="row cl">
+			<%--<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3">名称：</label>
 				<div class="form-label col-xs-8 col-sm-9">${item.productName }</div>
 			</div>
@@ -128,7 +128,18 @@ div.form-label{
 				<label class="form-label col-xs-4 col-sm-3">名义本金：</label>
 				<div class="form-label col-xs-8 col-sm-9">
 					${item.notionalPrincipalFormat }元</div>
-			</div>
+			</div>--%>
+			<p style="font-weight: 800">商品类：</p>
+			<p>开盘前下单：开盘后进场交易，接受市价、收盘价下单方式</p>
+			<p>开盘期间下单：实时进场交易，接受市价、收盘价下单方式</p>
+			<p>收盘前30分钟下单：默认为下一个交易日开盘前下单</p>
+			<p style="font-weight: 800">指数类：</p>
+			<p>仅接受当前收盘价成交</p>
+			<p>收盘前30分钟下单，默认为下一收盘价成交</p>
+			<p style="font-weight: 800">个股类：</p>
+			<p>开盘前下单，开盘后进场交易，接受挂价、市价、30分钟均价、收盘价下单方式</p>
+			<p>开盘期间实时进场交易，接受挂价、市价、30分钟均价、收盘价下单方式</p>
+			<p>收盘前15分钟下单，默认为下一个交易日开盘前下单</p>
 			<div class="row cl warning" >
 				点击成交后，系统会直接从您的账户余额中扣除管理费，您可以在交易记录(待成交页)中查询结果！<br />
 				如有疑问，您也可以联系我们的客服。
