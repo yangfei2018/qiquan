@@ -454,4 +454,13 @@ public class TradeDao {
 
 	}
 
+	/**
+	 * 更新结算状态
+	 * @param id
+	 * @return
+	 */
+	public int updateWithdrawStatus(Integer id){
+		Integer result = jdbcHelper.update("update t_cashrecord set f_status = 1,f_clearingTime = now() where f_id = ?",id);
+		return result;
+	}
 }

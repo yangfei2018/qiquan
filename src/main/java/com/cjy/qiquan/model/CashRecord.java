@@ -35,6 +35,14 @@ public class CashRecord implements Serializable {
 	private String bankCardNo;
 	
 	private String realName;
+
+	private String name;		//会员帐号
+
+	private String partnerCompanyName;	//代理商
+
+	private String pcompanyName;		//有限合伙公司
+
+	private Date clearingTime;			//结算时间
 	
 	public CashRecord() {
 
@@ -51,6 +59,13 @@ public class CashRecord implements Serializable {
 		bankOfDeposit = res.getString("f_bankOfDeposit");
 		bankCardNo = res.getString("f_bankCardNo");
 		realName = res.getString("f_realName");
+		name = res.getString("f_name");
+		partnerCompanyName = res.getString("f_partnerCompanyName");
+		pcompanyName = res.getString("f_pcompanyname");
+		Object temp = res.getTimestamp("f_clearingTime");
+		if(null != temp){
+			clearingTime = new Date(res.getTimestamp("f_clearingTime").getTime());
+		}
 	}
 	
 	
@@ -154,4 +169,44 @@ public class CashRecord implements Serializable {
 		return str;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPartnerCompanyName() {
+		return partnerCompanyName;
+	}
+
+	public void setPartnerCompanyName(String partnerCompanyName) {
+		this.partnerCompanyName = partnerCompanyName;
+	}
+
+	public String getPcompanyName() {
+		return pcompanyName;
+	}
+
+	public void setPcompanyName(String pcompanyName) {
+		this.pcompanyName = pcompanyName;
+	}
+
+	public Date getClearingTime() {
+		return clearingTime;
+	}
+
+	public void setClearingTime(Date clearingTime) {
+		this.clearingTime = clearingTime;
+	}
+
+	public String getClearingTimeFormat() {
+		if(getClearingTime() != null){
+			return DateFormater.simpleDateFormat(getClearingTime(), DateFormater.datetimeFormat2);
+		}else{
+			return "";
+		}
+
+	}
 }

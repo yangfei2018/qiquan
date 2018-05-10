@@ -368,4 +368,7 @@ public class TradeService {
 		return tradeDao.listCashRecordByStatus(status, userid, index, size);
 	}
 
+	public int updateWithdrawStatus(Integer id){
+		return tradeDao.updateWithdrawStatus(id);
+	}
 }

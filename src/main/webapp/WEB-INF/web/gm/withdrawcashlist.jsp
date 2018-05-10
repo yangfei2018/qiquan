@@ -65,21 +65,46 @@
 													<thead>
 														<tr>
 															<th>申请提现时间</th>
+															<th>代理商</th>
+															<th>有限合伙公司</th>
 															<th>提现金额（元）</th>
+															<th>会员帐号</th>
 															<th>真实姓名</th>
 															<th>提现到账户</th>
 															<th>提现到卡号</th>
+															<c:if test="${status==0 }">
+															<th>操作</th>
+															</c:if>
+															<c:if test="${status==1 }">
+																<th>结算时间</th>
+															</c:if>
 														</tr>
 													</thead>
 													<tbody>
 														<c:forEach items="${page.list }" var="item">
 															<tr>
 																<td>${item.createTimeFormat }</td>
+																<td>${item.partnerCompanyName }</td>
+																<td>${item.pcompanyName }</td>
 																<td>${item.amountFormat }</td>
+																<td>${item.name }</td>
 																<td>${item.realName }</td>
 
 																<td>${item.bankOfDeposit }</td>
 																<td>${item.bankCardNo }</td>
+																<c:if test="${status==0 }">
+																<td>
+																	<div class="btn-group">
+																		<button onClick="confirmWithdraw('${item.id}')"
+																				class="btn btn-xs btn-primary" type="button">
+																			确认
+																		</button>
+																	</div>
+																</td>
+																</c:if>
+																<c:if test="${status==1 }">
+																	<th>${item.clearingTimeFormat }</th>
+																</c:if>
 															</tr>
 														</c:forEach>
 													</tbody>
@@ -123,6 +148,32 @@
 		function excel() {
 			gohref("gm/withdrawcashlist?excel=1")
 		}
+
+        function confirmWithdraw(id) {
+		    console.log(id);
+            //询问框
+            layer.confirm('确认已结算？', {
+                btn: ['确认','取消'] //按钮
+            }, function(index){
+                $.ajax({
+                    url : 'gm/json/updateWithdrawStatus',
+                    type : 'post',
+                    dataType : "json",
+                    data : {
+                        id : id
+                    },
+                    success : function(res) {
+                        if (res.hasOwnProperty('result') && !res.result) {
+                            layer.msg(res.data);
+                        } else {
+                            layer.close(index);
+                            layer.msg('操作成功');
+                            window.location.href = window.location.href;
+                        }
+                    }
+                });
+            });
+        }
 	</script>
 </body>
 

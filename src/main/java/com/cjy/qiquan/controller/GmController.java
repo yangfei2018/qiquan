@@ -1899,4 +1899,17 @@ public class GmController {
 		req.getSession().setAttribute(Constant.SESSION_KEY.currentGmUser, session);
 		CookieUtils.addCookie(req, resp, Constant.SESSION_KEY.currentGmUser, token);
 	}
+
+	@SessionScope(Constant.SESSION_KEY.currentGmUser)
+	@RegistAuthority(AuthorityType.MASTER)
+	@RequestMapping(value = "/json/updateWithdrawStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo<String> confirmWithdraw(@RequestParam Integer id){
+		int result = tradeService.updateWithdrawStatus(id);
+		if(result > 0){
+			return new ResultVo.Builder<String>(true).setData("更新成功").build();
+		}else{
+			return new ResultVo.Builder<String>(false).setData("更新失败，请联系管理员").build();
+		}
+	}
 }
