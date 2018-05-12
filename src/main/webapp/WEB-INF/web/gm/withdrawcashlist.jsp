@@ -77,10 +77,12 @@
 															<input type="search" class="search_input" placeholder="请输入会员帐号">
 															<button type="button" class="btn btn-sm btn-danger"
 																	onclick="search(${status})">搜索</button>
+                                                            <button type="button" class="btn btn-sm btn-info" onclick="exportTable()">
+                                                                导出excel</button>
 														</div>
 													</div>
 												</c:if>
-												<table
+												<table  id="exportTable"
 													class="table table-striped table-bordered table-hover">
 													<thead>
 														<tr>
@@ -93,7 +95,7 @@
 															<th>提现到账户</th>
 															<th>提现到卡号</th>
 															<c:if test="${status==0 }">
-															<th>操作</th>
+															<th attrid="opt">操作</th>
 															</c:if>
 															<c:if test="${status==1 }">
 																<th>结算时间</th>
@@ -113,7 +115,7 @@
 																<td>${item.bankOfDeposit }</td>
 																<td>${item.bankCardNo }</td>
 																<c:if test="${status==0 }">
-																<td>
+																<td attrid="opt">
 																	<div class="btn-group">
 																		<button onClick="confirmWithdraw('${item.id}')"
 																				class="btn btn-xs btn-primary" type="button">
@@ -158,7 +160,8 @@
 	<script src="static/inspinia/js/inspinia.js"></script>
 	<script src="static/inspinia/js/plugins/pace/pace.min.js"></script>
 	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
-
+    <script src="static/export/app.js"></script>
+    <script src="static/export/js-xlsx/FileSaver.js"></script>
 
 	<script>
 		function reload_page() {
@@ -200,6 +203,11 @@
             var searchValue = $('.search_input').val();
             var encodeparam = encodeURI(searchValue);
             window.location.href = "gm/withdrawcashlist?searchValue=" + encodeparam + "&status=" + status;
+        }
+
+        //导出excel
+        function exportTable(){
+            $.app.export("提现记录", $("#exportTable"), {isSelections: false,seq:true});
         }
 	</script>
 </body>

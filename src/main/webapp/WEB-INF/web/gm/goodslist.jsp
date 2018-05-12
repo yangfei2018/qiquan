@@ -61,10 +61,12 @@
 
 										<input type="file" style="display: none" id="importFile"
 											accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"  />
+                                        <button type="button" class="btn btn-sm btn-info" onclick="exportTable()">
+                                            导出</button>
 									</div>
 								</div>
 								<div class="row">
-									<table class="table table-striped table-bordered table-hover">
+									<table class="table table-striped table-bordered table-hover" id="exportTable">
 										<thead>
 											<tr>
 												<th>商品分类</th>
@@ -77,7 +79,7 @@
 												<th>15天费率到期日</th>
 												<th>30天费率到期日</th>
 												<th>最后更新时间</th>
-												<th>操作</th>
+												<th attrid="opt">操作</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -95,7 +97,7 @@
 													<td>${item.feilv_15_time }</td>
 													<td>${item.feilv_30_time }</td>
 													<td>${item.lastUpdateTime }</td>
-													<td><button onclick="updateGoods('${item.id}')"
+													<td attrid="opt"><button onclick="updateGoods('${item.id}')"
 															class="btn btn-xs btn-primary">修改</button></td>
 												</tr>
 											</c:forEach>
@@ -123,7 +125,8 @@
 	<script src="static/inspinia/js/inspinia.js"></script>
 	<script src="static/inspinia/js/plugins/pace/pace.min.js"></script>
 	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
-
+    <script src="static/export/app.js"></script>
+    <script src="static/export/js-xlsx/FileSaver.js"></script>
 
 	<script>
 		$(function() {
@@ -203,11 +206,16 @@
 
 		}
 
-		//搜索
+        //搜索
         function search(){
             var searchValue = $('.search_input').val();
             var encodeparam = encodeURI(searchValue) ;
             window.location.href = "gm/goodslist?searchValue=" + encodeparam;
+        }
+
+        //导出excel
+        function exportTable(){
+            $.app.export("商品管理", $("#exportTable"), {isSelections: false,seq:true});
         }
 	</script>
 </body>

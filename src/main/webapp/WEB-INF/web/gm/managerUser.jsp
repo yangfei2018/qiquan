@@ -55,10 +55,12 @@
 										<input type="search" class="search_input" placeholder="请输入帐号名">
 										<button type="button" class="btn btn-sm btn-danger"
 												onclick="search()">搜索</button>
+										<button type="button" class="btn btn-sm btn-info" onclick="exportTable()">
+											导出excel</button>
 									</div>
 								</div>
 								<div class="row">
-									<table class="table table-striped table-bordered table-hover">
+									<table class="table table-striped table-bordered table-hover"  id="exportTable">
 										<thead>
 											<tr>
 												<th>账号名</th>
@@ -66,7 +68,7 @@
 												<th>是否系统管理员</th>
 												<th>权限</th>
 												<th>状态</th>
-												<th>操作</th>
+												<th attrid="opt">操作</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -77,7 +79,7 @@
 													<td>${item.isAdmin==1?'是':'否' }</td>
 													<td>${item.positionName }</td>
 													<td>${item.status==1?'正常':'禁用' }</td>
-													<td>
+													<td attrid="opt">
 														<div class="btn-group">
 															<button data-toggle="dropdown"
 																class="btn btn-xs btn-primary dropdown-toggle">
@@ -114,7 +116,8 @@
 	<script src="static/inspinia/js/inspinia.js"></script>
 	<script src="static/inspinia/js/plugins/pace/pace.min.js"></script>
 	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
-	
+	<script src="static/export/app.js"></script>
+	<script src="static/export/js-xlsx/FileSaver.js"></script>
 	
 	<script>
 		function reload_page(){
@@ -151,6 +154,11 @@
             var searchValue = $('.search_input').val();
             var encodeparam = encodeURI(searchValue);
             window.location.href = "gm/managerUser?searchValue=" + encodeparam;
+        }
+
+        //导出excel
+        function exportTable(){
+            $.app.export("帐号管理", $("#exportTable"), {isSelections: false,seq:true});
         }
 	</script>
 </body>

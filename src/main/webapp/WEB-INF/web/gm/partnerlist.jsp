@@ -46,7 +46,7 @@
 										<button type="button" class="btn btn-sm btn-danger" onclick="addPartner()">
 													新增代理商</button>
 									</div>
-									<div class="col-sm-4 pull-right">
+									<div class="col-sm-4 pull-right" style="text-align: right;padding-right:0;">
 										<button type="button" class="btn btn-sm btn-info" onclick="exportTable()">
 											导出</button>
 									</div>
