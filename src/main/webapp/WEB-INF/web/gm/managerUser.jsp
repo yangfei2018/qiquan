@@ -23,7 +23,14 @@
 <link href="static/inspinia/css/style.css" rel="stylesheet">
 
 </head>
-
+<style>
+	.search_input{
+		border:1px solid #e5e6e7;
+		border-radius:1px;
+		padding:6px 12px;
+		background-color:#FFFFFF;
+	}
+</style>
 <body>
 
 	<div id="wrapper">
@@ -43,6 +50,11 @@
 									<div class="col-sm-4 pull-left">
 										<button type="button" class="btn btn-sm btn-danger" onclick="addGm()">
 													新增账号</button>
+									</div>
+									<div class="col-sm-4 pull-right" style="text-align: right;">
+										<input type="search" class="search_input" placeholder="请输入帐号名">
+										<button type="button" class="btn btn-sm btn-danger"
+												onclick="search()">搜索</button>
 									</div>
 								</div>
 								<div class="row">
@@ -133,7 +145,12 @@
 				  content: 'gm/gmUserView/'+id
 				}); 
 		}
-		
+
+        //搜索
+        function search(){
+            var searchValue = $('.search_input').val();
+            window.location.href = "gm/managerUser?searchValue=" + searchValue;
+        }
 	</script>
 </body>
 

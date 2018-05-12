@@ -25,7 +25,14 @@
 <link href="static/inspinia/css/plugins/dataTables/datatables.min.css"
 	rel="stylesheet">
 </head>
-
+<style>
+	.search_input{
+		border:1px solid #e5e6e7;
+		border-radius:1px;
+		padding:6px 12px;
+		background-color:#FFFFFF;
+	}
+</style>
 <body>
 
 	<div id="wrapper">
@@ -67,14 +74,6 @@
 																onclick="excel(1)">导汇总excel</button>
 																</c:if> --%>
 													</div>
-													<div class="col-sm-6 pull-left">
-														<input type="text" placeholder="开始日期" value="" id="startTimePicker">
-														-
-														<input type="text" placeholder="结束日期" value="" id="endTimePicker">
-														<button type="button" class="btn btn-sm btn-search"
-																onclick="search(${status})">查询</button>
-													</div>
-
 
 													<c:if test="${status== 0}">
 
@@ -86,6 +85,7 @@
 																accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
 														</div>
 													</c:if>
+
 													<c:if test="${status== 2}">
 														<div class="col-sm-4 pull-right" style="text-align: right;vertical-align: top;margin-top:-40px;">
 															<button type="button" class="btn btn-sm btn-success"
@@ -93,6 +93,17 @@
 
 															<input type="file" style="display: none" id="importFile"
 																accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+														</div>
+													</c:if>
+
+													<%--当状态为已成交 已结算 交易关闭为增加搜索按钮--%>
+													<c:if test="${status== 1 || status ==3 || status == -1}">
+														<div class="col-sm-4 pull-right" style="text-align: right">
+															<input type="text" value="" id="startTimePicker" class="search_input">
+															-
+															<input type="text" value="" id="endTimePicker" class="search_input">
+															<button type="button" class="btn btn-sm btn-search"
+																	onclick="search(${status})">查询</button>
 														</div>
 													</c:if>
 												</div>
@@ -215,6 +226,10 @@
 																			<c:when test="${status==0 }">
 																${item.createTimeFormat }
 															</c:when>
+																		<c:when test="${item.status==-1 }">
+																			已取消<br />
+																			${item.closeReason }
+																		</c:when>
 																			<c:otherwise>
 																${item.orderStartTime } - ${item.orderEndTime }
 															</c:otherwise>
@@ -238,24 +253,20 @@
 																		</td>
 																		<td>${item.balanceAmountFormat }</td>
 																	</c:if>
-																	<td><c:choose>
+																	<c:choose>
 																			<c:when test="${item.status==0 }">
-																	待成交
+																	<td>待成交</td>
 																</c:when>
 																			<c:when test="${item.status==1 }">
-																	已成交
+																	<td>已成交</td>
 																</c:when>
 																			<c:when test="${item.status==2 }">
-																	平仓记录
+																	<td>平仓记录</td>
 																</c:when>
 																			<c:when test="${item.status==3 }">
-																	已结算
+																	<td>已结算</td>
 																</c:when>
-																			<c:when test="${item.status==-1 }">
-																	已取消<br />
-																	${item.closeReason }
-																</c:when>
-																		</c:choose></td>
+																		</c:choose>
 																	<td>
 																		<button onClick="orderView('${item.orderNo}');"
 																			class="btn btn-xs btn-primary" type="button">
@@ -459,14 +470,14 @@
 		$('#startTimePicker').datetimepicker({
             minView: "month", //选择日期后，不会再跳转去选择时分秒
             language:  'zh-CN',
-            format: 'yyyy-mm-dd HH:mm:ss',
+            format: 'yyyy-mm-dd',
             todayBtn:  1,
             autoclose: 1,
         });
 		$('#endTimePicker').datetimepicker({
             minView: "month", //选择日期后，不会再跳转去选择时分秒
             language:  'zh-CN',
-            format: 'yyyy-mm-dd HH:mm:ss',
+            format: 'yyyy-mm-dd',
             todayBtn:  1,
             autoclose: 1,
         });

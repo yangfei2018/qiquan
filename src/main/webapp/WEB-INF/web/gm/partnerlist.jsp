@@ -46,26 +46,20 @@
 										<button type="button" class="btn btn-sm btn-danger" onclick="addPartner()">
 													新增代理商</button>
 									</div>
-									<!-- <div class="col-sm-4 pull-right">
-										<div class="input-group">
-											<input type="text" placeholder="搜索"
-												class="input-sm form-control"> <span
-												class="input-group-btn">
-												<button type="button" class="btn btn-sm btn-primary">
-													搜索!</button>
-											</span>
-										</div>
-									</div> -->
+									<div class="col-sm-4 pull-right">
+										<button type="button" class="btn btn-sm btn-info" onclick="exportTable()">
+											导出</button>
+									</div>
 								</div>
 								<div class="row">
-									<table class="table table-striped table-bordered table-hover dataTables">
+									<table id="exportTable" class="table table-striped table-bordered table-hover dataTables">
 										<thead>
 											<tr>
 												<th>代理商编号</th>
 												<th>代理商名称</th>
 												<th>法人姓名</th>
 												<th>联系电话</th>
-												<th>操作</th>
+												<th attrid="opt">操作</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -75,7 +69,7 @@
 													<td>${item.companyName }</td>
 													<td>${item.realName }</td>
 													<td>${item.mobile }</td>
-													<td>
+													<td attrid="opt">
 														<div class="btn-group">
 															<button data-toggle="dropdown"
 																class="btn btn-xs btn-primary dropdown-toggle">
@@ -106,20 +100,21 @@
 	<script src="static/inspinia/js/jquery-3.1.1.min.js"></script>
 	<script src="static/inspinia/js/bootstrap.min.js"></script>
 	<script src="static/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-	<script
-		src="static/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="static/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 	<!-- Custom and plugin javascript -->
 	<script src="static/inspinia/js/inspinia.js"></script>
 	<script src="static/inspinia/js/plugins/pace/pace.min.js"></script>
 	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 	<script src="static/inspinia/js/plugins/dataTables/datatables.min.js"></script>
-	
+	<script src="static/export/app.js"></script>
+	<script src="static/export/js-xlsx/FileSaver.js"></script>
+
 	
 	<script>
 		$(function(){
 			$('.dataTables').DataTable({
-				pageLength : 25,
+				pageLength : 500,
 				responsive : true,
 				dom : '<"html5buttons"B>lTfgitp',
 				buttons : [ {
@@ -172,6 +167,10 @@
 				  maxmin:true,
 				  content: 'gm/partnerView/'+partnerNo+'/bankinfo'
 				}); 
+		}
+
+		function exportTable(){
+            $.app.export("代理商管理", $("#exportTable"), {isSelections: false,seq:true});
 		}
 	</script>
 </body>

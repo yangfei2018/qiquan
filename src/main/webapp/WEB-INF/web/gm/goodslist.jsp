@@ -24,7 +24,14 @@
 <link href="static/inspinia/css/style.css" rel="stylesheet">
 
 </head>
-
+<style>
+	.search_input{
+		border:1px solid #e5e6e7;
+		border-radius:1px;
+		padding:6px 12px;
+		background-color:#FFFFFF;
+	}
+</style>
 <body>
 
 	<div id="wrapper">
@@ -45,7 +52,10 @@
 										<button type="button" class="btn btn-sm btn-danger"
 											onclick="updateGoods(0)">新增商品</button>
 									</div>
-									<div class="col-sm-4 pull-right" style="text-align: right">
+									<div class="col-sm-4 pull-right" style="text-align: right;">
+										<input type="search" class="search_input" placeholder="请输入商品编号或名称">
+										<button type="button" class="btn btn-sm btn-danger"
+												onclick="search()">搜索</button>
 										<button type="button" class="btn btn-sm btn-success"
 											onclick="$('#importFile').click()">导入费率</button>
 
@@ -192,6 +202,12 @@
 			}
 
 		}
+
+		//搜索
+        function search(){
+            var searchValue = $('.search_input').val();
+            window.location.href = "gm/goodslist?searchValue=" + searchValue;
+        }
 	</script>
 </body>
 

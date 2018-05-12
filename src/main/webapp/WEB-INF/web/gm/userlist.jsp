@@ -70,10 +70,12 @@
 																	<c:if test="${partnerId==partner.userId }">selected="selected" </c:if>>${partner.companyName }</option>
 															</c:forEach>
 														</select>
+														<button type="button" class="btn btn-sm btn-info" onclick="exportTable()">
+															导出</button>
 													</div>
 												</div>
 
-												<table
+												<table id="exportTable"
 													class="dataTables table table-striped table-bordered table-hover">
 													<thead>
 														<tr>
@@ -88,7 +90,7 @@
 																<th>账户余额</th>
 															</c:if>
 															<c:if test="${role_id!= 1}">
-															<th>操作</th>
+															<th attrid="opt">操作</th>
 															</c:if>
 														</tr>
 													</thead>
@@ -119,7 +121,7 @@
 																	<td>${item.amount }</td>
 																</c:if>
 																<c:if test="${role_id!= 1}">
-																<td>
+																<td attrid="opt">
 																	<div class="btn-group">
 																		<button data-toggle="dropdown"
 																			class="btn btn-xs btn-primary dropdown-toggle">
@@ -171,6 +173,8 @@
 	<script src="static/inspinia/js/plugins/pace/pace.min.js"></script>
 	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 	<script src="static/inspinia/js/plugins/dataTables/datatables.min.js"></script>
+	<script src="static/export/app.js"></script>
+	<script src="static/export/js-xlsx/FileSaver.js"></script>
 
 	<script>
 		$(function() {
@@ -242,6 +246,10 @@
 				content : 'gm/partnerView/' + partnerNo + '/bankinfo'
 			});
 		}
+
+        function exportTable(){
+            $.app.export("会员管理", $("#exportTable"), {isSelections: false,seq:true});
+        }
 	</script>
 </body>
 

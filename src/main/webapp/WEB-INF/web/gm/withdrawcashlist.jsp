@@ -23,7 +23,14 @@
 <link href="static/inspinia/css/style.css" rel="stylesheet">
 
 </head>
-
+<style>
+	.search_input{
+		border:1px solid #e5e6e7;
+		border-radius:1px;
+		padding:6px 12px;
+		background-color:#FFFFFF;
+	}
+</style>
 <body>
 
 	<div id="wrapper">
@@ -55,10 +62,23 @@
 											
 												<div class="row">
 													<div class="col-sm-4 pull-right" style="text-align: right">
+														<input type="search" class="search_input" placeholder="请输入提现编号">
+														<button type="button" class="btn btn-sm btn-danger"
+																onclick="search()">搜索</button>
 														<button type="button" class="btn btn-sm btn-danger"
 															onclick="excel()">导出excel</button>
 													</div>
 												</div>
+												</c:if>
+												<c:if test="${status==1 }">
+
+													<div class="row">
+														<div class="col-sm-4 pull-right" style="text-align: right">
+															<input type="search" class="search_input" placeholder="请输入会员帐号">
+															<button type="button" class="btn btn-sm btn-danger"
+																	onclick="search()">搜索</button>
+														</div>
+													</div>
 												</c:if>
 												<table
 													class="table table-striped table-bordered table-hover">
@@ -173,6 +193,12 @@
                     }
                 });
             });
+        }
+
+        //搜索
+        function search(){
+            var searchValue = $('.search_input').val();
+            window.location.href = "gm/withdrawcashlist?searchValue=" + searchValue;
         }
 	</script>
 </body>
