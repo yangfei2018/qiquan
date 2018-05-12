@@ -645,9 +645,11 @@ public class GmController {
 	@RegistAuthority(AuthorityType.MASTER)
 	@RequestMapping("/goodslist")
 	public String goodsList(GmUser user, @RequestParam(required = false, defaultValue = "0") int categoryid,
-			@RequestParam(required = false, defaultValue = "1") int index, Model model) {
+			@RequestParam(required = false, defaultValue = "1") int index,
+			@RequestParam(required = false, defaultValue = "") String searchValue,Model model) {
 		model.addAttribute("user", user);
-		List<Goods> goodsList = goodsService.listGoodsByCategoryId(0);
+//		List<Goods> goodsList = goodsService.listGoodsByCategoryId(0);
+		List<Goods> goodsList = goodsService.listGoodsByName(searchValue);
 
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("categoryid", categoryid);
@@ -1519,8 +1521,9 @@ public class GmController {
 	@RequestMapping(value = "/exchangelist", method = RequestMethod.GET)
 	public String exchangelist(GmUser user, @RequestParam(required = false, defaultValue = "0") int status,
 			@RequestParam(required = false, defaultValue = "1") int index,
+			@RequestParam(required = false, defaultValue = "") String searchValue,
 			@RequestParam(required = false, defaultValue = "0") int excel, HttpServletResponse response, Model model) {
-		Page<VRechargeRecord> page = tradeService.listRechargeRecordByPartnerId(0, status, index, 9999);
+		Page<VRechargeRecord> page = tradeService.listRechargeRecordByPartnerId(0, status, index, 9999,searchValue);
 		model.addAttribute("status", status);
 		model.addAttribute("page", page);
 		model.addAttribute("index", index);
@@ -1634,8 +1637,9 @@ public class GmController {
 	@SessionScope(Constant.SESSION_KEY.currentGmUser)
 	@RegistAuthority(AuthorityType.MASTER)
 	@RequestMapping(value = "/managerUser", method = RequestMethod.GET)
-	public String managerUser(GmUser user, Model model) {
-		List<GmUser> gmUsers = gmService.listAllGmUser();
+	public String managerUser(GmUser user, Model model,
+							  @RequestParam(required = false,defaultValue = "") String searchValue) {
+		List<GmUser> gmUsers = gmService.listAllGmUser(searchValue);
 		model.addAttribute("gmUsers", gmUsers);
 		return "gm/managerUser";
 	}
@@ -1731,11 +1735,12 @@ public class GmController {
 	@RequestMapping(value = "/withdrawcashlist", method = RequestMethod.GET)
 	public String withdrawcashlist(GmUser user, @RequestParam(required = false, defaultValue = "0") int status,
 			@RequestParam(required = false, defaultValue = "1") int index,
+			@RequestParam(required = false, defaultValue = "") String searchValue,
 			@RequestParam(required = false, defaultValue = "0") int excel, HttpServletResponse response, Model model) {
 		model.addAttribute("status", status);
 		Page<CashRecord> pages = null;
 		if (user.getIsAdmin() == 1 || user.getPositionId() == Constant.GM_ROLE.OP_MASTER.getId()) {
-			pages = tradeService.listCashRecordByStatus(status, null, index, 9999);
+			pages = tradeService.listCashRecordByStatus(status, null, index, 9999,searchValue);
 		} else {
 			// 普通管理员，先获取合作方信息
 			Page<Partner> partners = partnerService.listPartnerByGmUserId(user.getUserId(), 1, 99999);
@@ -1745,7 +1750,7 @@ public class GmController {
 			}
 
 			List<String> userIds = userService.listUserIdsByCodes(partnerCodes);
-			pages = tradeService.listCashRecordByStatus(status, userIds, index, 9999);
+			pages = tradeService.listCashRecordByStatus(status, userIds, index, 9999,searchValue);
 		}
 
 		model.addAttribute("page", pages);

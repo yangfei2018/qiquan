@@ -254,14 +254,14 @@ public class TradeService {
 	}
 
 	public Page<VRechargeRecord> listRechargeRecordByPartnerId(final int partnerId, final int status, int index,
-			int size) {
+			int size,String searchValue) {
 		if (index <= 0) {
 			index = 1;
 		}
 		if (size <= 0) {
 			size = 20;
 		}
-		return tradeDao.listRechargeRecordByPartnerId(partnerId, status, index, size);
+		return tradeDao.listRechargeRecordByPartnerId(partnerId, status, index, size,searchValue);
 	}
 
 	@Transactional
@@ -365,8 +365,8 @@ public class TradeService {
 	}
 
 	public Page<CashRecord> listCashRecordByStatus(final int status, List<String> userid, final int index,
-			final int size) {
-		return tradeDao.listCashRecordByStatus(status, userid, index, size);
+			final int size,String searchValue) {
+		return tradeDao.listCashRecordByStatus(status, userid, index, size,searchValue);
 	}
 
 	public int updateWithdrawStatus(Integer id){

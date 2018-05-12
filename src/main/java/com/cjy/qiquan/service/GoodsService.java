@@ -102,4 +102,8 @@ public class GoodsService {
 		return null;
 	}
 
+	public List<Goods> listGoodsByName(String searchValue) {
+		List<Goods> list = goodsDao.listGoodsByName(searchValue);
+		return list;
+	}
 }

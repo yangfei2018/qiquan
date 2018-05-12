@@ -783,7 +783,7 @@ public class CustomerController {
 
 		List<String> userIds = new ArrayList<>();
 		userIds.add(user.getUserId() + "");
-		Page<CashRecord> page = tradeService.listCashRecordByStatus(status, userIds, index, 999);
+		Page<CashRecord> page = tradeService.listCashRecordByStatus(status, userIds, index, 999,null);
 		model.addAttribute("page", page);
 		model.addAttribute("index", index);
 		model.addAttribute("status", status);

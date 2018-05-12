@@ -61,7 +61,7 @@
 													<div class="col-sm-4 pull-right" style="text-align: right">
 														<input type="search" class="search_input" placeholder="请输入会员帐号">
 														<button type="button" class="btn btn-sm btn-danger"
-																onclick="search()">搜索</button>
+																onclick="search(${status})">搜索</button>
 														<button type="button" class="btn btn-sm btn-danger"
 															onclick="excel()">导出excel</button>
 													</div>
@@ -232,9 +232,10 @@
 		}
 
         //搜索
-        function search(){
+        function search(status){
             var searchValue = $('.search_input').val();
-            window.location.href = "gm/exchangelist?searchValue=" + searchValue;
+            var encodeparam = encodeURI(searchValue) ;
+            window.location.href = "gm/exchangelist?searchValue=" + encodeparam + "&status=" + status;
         }
 	</script>
 </body>

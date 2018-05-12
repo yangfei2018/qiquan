@@ -1,9 +1,11 @@
 package com.cjy.qiquan.dao;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -41,8 +43,17 @@ public class GmDao {
 						user.getUserId() });
 	}
 	
-	public List<GmUser> listAllGmUser(){
-		return jdbcHelper.query("SELECT * FROM `t_gmuser` ", USER);
+	public List<GmUser> listAllGmUser(String searchValue){
+		StringBuilder sql = new StringBuilder("SELECT * FROM `t_gmuser` where 1=1 ");
+		if (StringUtils.isNotBlank(searchValue)) {
+			try {
+				searchValue= new String(searchValue.getBytes("iso-8859-1"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			sql.append(" and f_name like concat('%','").append(searchValue).append("','%')");
+		}
+		return jdbcHelper.query(sql.toString(), USER);
 	}
 
 	public GmUser getUserById(final int id) {

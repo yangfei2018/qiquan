@@ -1,9 +1,11 @@
 package com.cjy.qiquan.dao;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -44,6 +46,21 @@ public class GoodsDao {
 				goods.getFeilv_15_time(),goods.getFeilv_30_time(),goods.getMin_shou(),goods.getDanwei(),
 				goods.getId()
 		});
+	}
+
+	public List<Goods> listGoodsByName(String searchValue) {
+		StringBuilder sql = new StringBuilder("");
+		sql.append("select * from t_goods where 1=1 ");
+		if (StringUtils.isNotBlank(searchValue)) {
+			try {
+				searchValue= new String(searchValue.getBytes("iso-8859-1"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			sql.append("and (f_name like concat('%','").append(searchValue).append("','%')")
+					.append(" or f_code = '").append(searchValue).append("')");
+		}
+		return jdbcHelper.query(sql.toString(), GOODS);
 	}
 
 }

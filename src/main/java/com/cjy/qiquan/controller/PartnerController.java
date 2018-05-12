@@ -300,7 +300,7 @@ public class PartnerController {
 	@RequestMapping(value = "/exchangelist", method = RequestMethod.GET)
 	public String exchangelist(Partner user, @RequestParam(required = false, defaultValue = "0") int status,
 			@RequestParam(required = false, defaultValue = "1") int index, Model model) {
-		Page<VRechargeRecord> page = tradeService.listRechargeRecordByPartnerId(user.getUserId(), status, index, 9999);
+		Page<VRechargeRecord> page = tradeService.listRechargeRecordByPartnerId(user.getUserId(), status, index, 9999,null);
 		model.addAttribute("status", status);
 		model.addAttribute("page", page);
 		model.addAttribute("index", index);
@@ -317,7 +317,7 @@ public class PartnerController {
 		partnerCodes.add(user.getCode());
 
 		List<String> userIds = userService.listUserIdsByCodes(partnerCodes);
-		Page<CashRecord> pages = tradeService.listCashRecordByStatus(status, userIds, index, 9999);
+		Page<CashRecord> pages = tradeService.listCashRecordByStatus(status, userIds, index, 9999,null);
 
 		model.addAttribute("page", pages);
 		model.addAttribute("status", status);

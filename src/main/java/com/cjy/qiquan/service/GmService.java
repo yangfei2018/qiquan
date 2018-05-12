@@ -71,8 +71,8 @@ public class GmService {
 	}
 
 	
-	public List<GmUser> listAllGmUser(){
-		return gmDao.listAllGmUser();
+	public List<GmUser> listAllGmUser(String searchValue){
+		return gmDao.listAllGmUser(searchValue);
 	}
 	
 	public GmUser getUserByToken(final String token) {

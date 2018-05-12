@@ -149,7 +149,8 @@
         //搜索
         function search(){
             var searchValue = $('.search_input').val();
-            window.location.href = "gm/managerUser?searchValue=" + searchValue;
+            var encodeparam = encodeURI(searchValue);
+            window.location.href = "gm/managerUser?searchValue=" + encodeparam;
         }
 	</script>
 </body>

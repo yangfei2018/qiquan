@@ -288,7 +288,7 @@ public class TradeDao {
 	}
 
 	public Page<VRechargeRecord> listRechargeRecordByPartnerId(final int partnerId, final int status, int index,
-			int size) {
+			int size,String searchValue) {
 		Page<VRechargeRecord> page = new Page<>();
 		page.setIndex(index);
 		page.setSize(size);
@@ -301,7 +301,14 @@ public class TradeDao {
 					.append(partnerId);
 
 		}
-
+		if(StringUtils.isNotBlank(searchValue)){
+			try {
+				searchValue = new String(searchValue.getBytes("iso-8859-1"),"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			sql.append(" and f_name like concat('%','").append(searchValue).append("','%')");
+		}
 		int total = jdbcHelper.queryForObject("SELECT count(*) " + sql.toString(), Integer.class);
 		page.setTotal(total);
 		sql.append(" ORDER BY f_createTime DESC");
@@ -451,7 +458,7 @@ public class TradeDao {
 		return ref;
 	}
 
-	public Page<CashRecord> listCashRecordByStatus(final int status,List<String> userid, final int index, final int size) {
+	public Page<CashRecord> listCashRecordByStatus(final int status,List<String> userid, final int index, final int size,String searchValue) {
 		Page<CashRecord> page = new Page<>();
 		page.setIndex(index);
 		page.setSize(size);
@@ -473,7 +480,14 @@ public class TradeDao {
 
 			sql.append(") ");
 		}
-
+		if (StringUtils.isNotBlank(searchValue)) {
+			try {
+				searchValue= new String(searchValue.getBytes("iso-8859-1"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			sql.append(" and f_name like concat('%','").append(searchValue).append("','%')");
+		}
 		int total = jdbcHelper.queryForObject("SELECT count(*) " + sql.toString(), Integer.class);
 		page.setTotal(total);
 		sql.append(" ORDER BY f_createTime DESC");
