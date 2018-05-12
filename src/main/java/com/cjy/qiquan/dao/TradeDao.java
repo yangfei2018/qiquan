@@ -1,5 +1,6 @@
 package com.cjy.qiquan.dao;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -355,23 +356,32 @@ public class TradeDao {
 		if(null != map){
 			String startTime = (String) map.get("startTime");
 			String endTime = (String) map.get("endTime");
+			String searchText = (String) map.get("searchText");
 			if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
 				switch (status){
 					case 0:
 						sql.append(" and f_createTime >= '").append(startTime).append("'")
 								.append(" and f_createTime <= '").append(endTime).append("'");
 						break;
+					case 3:
+						sql.append(" and f_balanceTime >= '").append(startTime).append("'")
+								.append(" and f_balanceTime <= '").append(endTime).append("'");
+						break;
 					default:
 						sql.append(" and f_updateTime >= '").append(startTime).append("'")
 								.append(" and f_updateTime <= '").append(endTime).append("'");
 						break;
 				}
-//				if(status == 0){
-//					sql.append(" and f_createTime >= '").append(startTime).append("'")
-//							.append(" and f_createTime <= '").append(endTime).append("'");
-//				}
-//				sql.append(" and f_updateTime >= '").append(startTime).append("'")
-//						.append(" and f_updateTime <= '").append(endTime).append("'");
+			}
+			if(StringUtils.isNotBlank(searchText)){
+				try {
+					searchText= new String(searchText.getBytes("iso-8859-1"), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				sql.append(" and (f_buyerMobile like concat('%','").append(searchText).append("','%')")
+						.append(" or f_buyerName like concat('%','").append(searchText).append("','%')")
+						.append(" or f_buyerPartnerCompanyName like concat('%','").append(searchText).append("','%'))");
 			}
 		}
 		int total = jdbcHelper.queryForObject("SELECT count(*) " + sql.toString(), Integer.class);
@@ -390,7 +400,6 @@ public class TradeDao {
 		
 		sql.append(" LIMIT ").append((page.getIndex() - 1) * page.getSize()).append(" , ").append(page.getSize());
 
-		System.out.println(sql.toString());
 		List<VOrder> list = jdbcHelper.query("SELECT * " + sql.toString(), new RowMapper<VOrder>() {
 			@Override
 			public VOrder mapRow(ResultSet rs, int rowNum) throws SQLException {

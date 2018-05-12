@@ -68,9 +68,9 @@
 																</c:if> --%>
 													</div>
 													<div class="col-sm-6 pull-left">
-														<input type="text" value="" id="startTimePicker">
+														<input type="text" placeholder="开始日期" value="" id="startTimePicker">
 														-
-														<input type="text" value="" id="endTimePicker">
+														<input type="text" placeholder="结束日期" value="" id="endTimePicker">
 														<button type="button" class="btn btn-sm btn-search"
 																onclick="search(${status})">查询</button>
 													</div>
@@ -459,14 +459,14 @@
 		$('#startTimePicker').datetimepicker({
             minView: "month", //选择日期后，不会再跳转去选择时分秒
             language:  'zh-CN',
-            format: 'yyyy-mm-dd',
+            format: 'yyyy-mm-dd HH:mm:ss',
             todayBtn:  1,
             autoclose: 1,
         });
 		$('#endTimePicker').datetimepicker({
             minView: "month", //选择日期后，不会再跳转去选择时分秒
             language:  'zh-CN',
-            format: 'yyyy-mm-dd',
+            format: 'yyyy-mm-dd HH:mm:ss',
             todayBtn:  1,
             autoclose: 1,
         });

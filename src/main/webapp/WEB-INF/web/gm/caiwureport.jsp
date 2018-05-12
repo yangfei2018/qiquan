@@ -41,6 +41,13 @@
 						<div class="ibox float-e-margins">
 							<div class="ibox-content">
 								<div class="row">
+									<div class="col-sm-8 pull-left">
+										<input type="text" placeholder="请输入帐号、客户名或公司" value="" id="searchText">
+										<input type="text" placeholder="开始日期" value="" id="startTimePicker">-
+										<input type="text" placeholder="结束日期" value="" id="endTimePicker">
+										<button type="button" class="btn btn-sm btn-search"
+												onclick="search()">查询</button>
+									</div>
 									<div class="col-sm-4 pull-right" style="text-align: right">
 										<button type="button" class="btn btn-sm btn-danger"
 											onclick="excel()">导出excel</button>
@@ -59,6 +66,7 @@
 												<th>结算金额（元）</th>
 												<th>应返有限合伙（元）</th>
 												<th>应返客户（元）</th>
+												<th>结算时间</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -72,6 +80,7 @@
 													<td align="right">${item.balanceAmountFormat }</td>
 													<td align="right">${item.hehuoAmountFormat }</td>
 													<td align="right">${item.discountFormat }</td>
+													<td align="right">${item.balanceTimeFormat }</td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -100,6 +109,9 @@
 	<script src="static/inspinia/js/inspinia.js"></script>
 	<script src="static/inspinia/js/plugins/pace/pace.min.js"></script>
 	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+	<script src="static/inspinia/js/plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+	<link href="static/inspinia/js/plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css"
+		  rel="stylesheet">
 
 
 	<script>
@@ -111,6 +123,28 @@
 		function excel() {
 			gohref("gm/caiwureport?excel=1")
 		}
+        $('#startTimePicker').datetimepicker({
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd HH:mm:ss',
+            todayBtn:  1,
+            autoclose: 1,
+        });
+        $('#endTimePicker').datetimepicker({
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd HH:mm:ss',
+            todayBtn:  1,
+            autoclose: 1,
+        });
+        function search(){
+            var startTime = $('#startTimePicker').val();
+            var endTime = $('#endTimePicker').val();
+            var searchText = $('#searchText').val();
+            var encodeparam = encodeURI(searchText) ;
+            window.location.href = "gm/caiwureport?startTime="+startTime + "&endTime=" + endTime + "&searchText=" + encodeparam;
+            // console.log("status:" + status + "\nstartTime:" + startTime + "\nendTime:" + endTime);
+        }
 	</script>
 </body>
 

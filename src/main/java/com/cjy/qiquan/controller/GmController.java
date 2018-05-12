@@ -1820,8 +1820,16 @@ public class GmController {
 	@RegistAuthority(AuthorityType.MASTER)
 	@RequestMapping(value = "/caiwureport", method = RequestMethod.GET)
 	public String withdrawcashlist(GmUser user, Model model,
-			@RequestParam(required = false, defaultValue = "0") int excel, HttpServletResponse response) {
-		Page<VOrder> pages = tradeService.listVOrderByStatus(3, null, 1, 9999, "",null);
+			@RequestParam(required = false, defaultValue = "0") int excel,
+			@RequestParam(required = false, defaultValue = "") String startTime,
+			@RequestParam(required = false, defaultValue = "") String endTime,
+			@RequestParam(required = false, defaultValue = "") String searchText,
+			HttpServletResponse response) {
+		Map map = Maps.newHashMap();
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
+		map.put("searchText",searchText);
+		Page<VOrder> pages = tradeService.listVOrderByStatus(3, null, 1, 9999, "",map);
 		if (excel == 0) {
 			model.addAttribute("page", pages);
 			return "gm/caiwureport";
