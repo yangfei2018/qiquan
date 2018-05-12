@@ -27,7 +27,7 @@ public class ScheduleService {
 
 	public void run_on_24() {
 
-		Page<VOrder> pages = tradeService.listVOrderByStatus(2, null, 1, 99999,"");
+		Page<VOrder> pages = tradeService.listVOrderByStatus(2, null, 1, 99999,"",null);
 		List<VOrder> list = pages.getList();
 		int today = DateFormater.getDayInt(System.currentTimeMillis());
 		for (VOrder order : list) {

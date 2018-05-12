@@ -3,7 +3,9 @@ package com.cjy.qiquan.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -199,7 +201,7 @@ public class TradeDao {
 
 	
 	public int closeOrder(String reason,final int id) {
-		return jdbcHelper.update("UPDATE `t_order` set f_status=?,f_closeReason=?,f_updateTime=NOW() where f_id=?", new Object[] {
+		return jdbcHelper.update("UPDATE `t_order` set f_status=?,f_closeReason=?,f_optTime=NOW(),f_updateTime=NOW() where f_id=?", new Object[] {
 				-1,reason,id
 		});
 	}
@@ -317,7 +319,7 @@ public class TradeDao {
 
 	}
 
-	public Page<VOrder> listVOrderByStatus(final int status, List<String> userid, int index, int size,String ids) {
+	public Page<VOrder> listVOrderByStatus(final int status, List<String> userid, int index, int size, String ids, Map map) {
 		Page<VOrder> page = new Page<>();
 		page.setIndex(index);
 		page.setSize(size);
@@ -350,12 +352,39 @@ public class TradeDao {
 		if (CommonUtils.hasText(ids)) {
 			sql.append(" AND f_id in (").append(ids).append(")");
 		}
-
+		if(null != map){
+			String startTime = (String) map.get("startTime");
+			String endTime = (String) map.get("endTime");
+			if(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime)){
+				switch (status){
+					case 0:
+						sql.append(" and f_createTime >= '").append(startTime).append("'")
+								.append(" and f_createTime <= '").append(endTime).append("'");
+						break;
+					default:
+						sql.append(" and f_updateTime >= '").append(startTime).append("'")
+								.append(" and f_updateTime <= '").append(endTime).append("'");
+						break;
+				}
+//				if(status == 0){
+//					sql.append(" and f_createTime >= '").append(startTime).append("'")
+//							.append(" and f_createTime <= '").append(endTime).append("'");
+//				}
+//				sql.append(" and f_updateTime >= '").append(startTime).append("'")
+//						.append(" and f_updateTime <= '").append(endTime).append("'");
+			}
+		}
 		int total = jdbcHelper.queryForObject("SELECT count(*) " + sql.toString(), Integer.class);
 		page.setTotal(total);
 		if (status==2) {
 			sql.append(" ORDER BY f_updateTime DESC");
-		}else {
+		}else if(status == -1) {
+			sql.append(" ORDER BY f_optTime DESC");
+		}else if(status == 1) {
+			sql.append(" ORDER BY f_dealTime DESC");
+		}else if(status == 3) {
+			sql.append(" ORDER BY f_balanceTime DESC");
+		}else{
 			sql.append(" ORDER BY f_createTime DESC");
 		}
 		
@@ -376,7 +405,7 @@ public class TradeDao {
 
 	public int dealOrder(Order order) {
 		return jdbcHelper.update(
-				"update `t_order` SET f_orderStartTime=?,f_orderEndTime=?,f_status=?,f_updateTime=NOW(),f_tradeAmount=?,f_amount=?,f_notionalPrincipal=? where f_orderNo=?",
+				"update `t_order` SET f_orderStartTime=?,f_orderEndTime=?,f_status=?,f_updateTime=NOW(),f_dealTime=NOW(),f_tradeAmount=?,f_amount=?,f_notionalPrincipal=? where f_orderNo=?",
 				new Object[] { order.getOrderStartTime(), order.getOrderEndTime(), 1, order.getTradeAmount(),order.getAmount(),order.getNotionalPrincipal(),
 						order.getOrderNo() });
 	}

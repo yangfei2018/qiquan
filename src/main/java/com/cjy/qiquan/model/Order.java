@@ -40,6 +40,10 @@ public class Order extends TradeRecord {
 	
 	private double executivePrice;
 
+	private Date dealTime;			//成交时间
+
+	private Date optTime;			//操作时间（关闭交易）
+
 	public Order() {
 		super();
 	}
@@ -60,6 +64,18 @@ public class Order extends TradeRecord {
 			Timestamp t = res.getTimestamp("f_balanceTime");
 			if (t != null) {
 				balanceTime = new Date(t.getTime());
+			}
+		}
+		{
+			Timestamp temp = res.getTimestamp("f_dealTime");
+			if (temp != null) {
+				this.dealTime = new Date(temp.getTime());
+			}
+		}
+		{
+			Timestamp temp = res.getTimestamp("f_optTime");
+			if (temp != null) {
+				this.optTime = new Date(temp.getTime());
 			}
 		}
 
@@ -238,4 +254,35 @@ public class Order extends TradeRecord {
 		}
 	}
 
+	public Date getDealTime() {
+		return dealTime;
+	}
+
+	public void setDealTime(Date dealTime) {
+		this.dealTime = dealTime;
+	}
+
+	public Date getOptTime() {
+		return optTime;
+	}
+
+	public void setOptTime(Date optTime) {
+		this.optTime = optTime;
+	}
+
+	public String getDealTimeFormat() {
+		if (getDealTime() != null) {
+			return DateFormater.simpleDateFormat(getDealTime(), DateFormater.datetimeFormat2);
+		} else {
+			return "";
+		}
+	}
+
+	public String getOptTimeFormat() {
+		if (getOptTime() != null) {
+			return DateFormater.simpleDateFormat(getOptTime(), DateFormater.datetimeFormat2);
+		} else {
+			return "";
+		}
+	}
 }

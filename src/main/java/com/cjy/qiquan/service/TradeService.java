@@ -2,6 +2,7 @@ package com.cjy.qiquan.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -220,14 +221,14 @@ public class TradeService {
 		return tradeDao.listOrderByUser(userid, status, index, size);
 	}
 
-	public Page<VOrder> listVOrderByStatus(final int status, List<String> userid, int index, int size, String ids) {
+	public Page<VOrder> listVOrderByStatus(final int status, List<String> userid, int index, int size, String ids, Map map) {
 		if (index <= 0) {
 			index = 1;
 		}
 		if (size <= 0) {
 			size = 20;
 		}
-		return tradeDao.listVOrderByStatus(status, userid, index, size, ids);
+		return tradeDao.listVOrderByStatus(status, userid, index, size, ids,map);
 	}
 
 	public Order getOrderByOrderNo(final String orderNo) {

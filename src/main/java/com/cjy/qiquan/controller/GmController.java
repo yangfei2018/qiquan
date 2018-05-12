@@ -5,10 +5,12 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Maps;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -205,7 +207,7 @@ public class GmController {
 	@RequestMapping(value = "/exportTradeToExcel")
 	public void exportTradeToExcel(@RequestParam(required = false, defaultValue = "0") int status,
 			HttpServletResponse response) {
-		Page<VOrder> pages = tradeService.listVOrderByStatus(status, null, 1, 9999, "");
+		Page<VOrder> pages = tradeService.listVOrderByStatus(status, null, 1, 9999, "",null);
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("交易订单");
 		HSSFRow row = sheet.createRow((int) 0);
@@ -798,12 +800,16 @@ public class GmController {
 			@RequestParam(required = false, defaultValue = "1") int index,
 			@RequestParam(required = false, defaultValue = "0") int excel,
 			@RequestParam(required = false, defaultValue = "0") int hz,
-			@RequestParam(required = false, defaultValue = "") String ids, 
+			@RequestParam(required = false, defaultValue = "") String ids,
+			@RequestParam(required = false, defaultValue = "") String startTime,
+			@RequestParam(required = false, defaultValue = "") String endTime,
 			HttpServletResponse response, Model model) {
-
+		Map map = Maps.newHashMap();
+		map.put("startTime",startTime);
+		map.put("endTime",endTime);
 		Page<VOrder> pages = null;
 		if (user.getIsAdmin() == 1 || user.getPositionId() == Constant.GM_ROLE.OP_MASTER.getId()) {
-			pages = tradeService.listVOrderByStatus(status, null, index, 9999, ids);
+			pages = tradeService.listVOrderByStatus(status, null, index, 9999, ids,map);
 		} else {
 			// 普通管理员，先获取合作方信息
 			Page<Partner> partners = partnerService.listPartnerByGmUserId(user.getUserId(), 1, 99999);
@@ -813,7 +819,7 @@ public class GmController {
 			}
 
 			List<String> userIds = userService.listUserIdsByCodes(partnerCodes);
-			pages = tradeService.listVOrderByStatus(status, userIds, index, 9999, ids);
+			pages = tradeService.listVOrderByStatus(status, userIds, index, 9999, ids,map);
 		}
 
 		if (excel == 0) {
@@ -1815,7 +1821,7 @@ public class GmController {
 	@RequestMapping(value = "/caiwureport", method = RequestMethod.GET)
 	public String withdrawcashlist(GmUser user, Model model,
 			@RequestParam(required = false, defaultValue = "0") int excel, HttpServletResponse response) {
-		Page<VOrder> pages = tradeService.listVOrderByStatus(3, null, 1, 9999, "");
+		Page<VOrder> pages = tradeService.listVOrderByStatus(3, null, 1, 9999, "",null);
 		if (excel == 0) {
 			model.addAttribute("page", pages);
 			return "gm/caiwureport";

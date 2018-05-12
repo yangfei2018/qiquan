@@ -230,7 +230,7 @@ public class PartnerController {
 			@RequestParam(required = false, defaultValue = "1") int index, Model model) {
 		List<String> userIds = new ArrayList<>();
 		userIds.add(id + "");
-		Page<VOrder> pages = tradeService.listVOrderByStatus(status, userIds, index, 9999, "");
+		Page<VOrder> pages = tradeService.listVOrderByStatus(status, userIds, index, 9999, "",null);
 		model.addAttribute("page", pages);
 		model.addAttribute("status", status);
 		model.addAttribute("index", index);
@@ -288,7 +288,7 @@ public class PartnerController {
 		partnerCodes.add(user.getCode());
 
 		List<String> userIds = userService.listUserIdsByCodes(partnerCodes);
-		Page<VOrder> pages = tradeService.listVOrderByStatus(status, userIds, index, 9999, "");
+		Page<VOrder> pages = tradeService.listVOrderByStatus(status, userIds, index, 9999, "",null);
 		model.addAttribute("page", pages);
 		model.addAttribute("status", status);
 		model.addAttribute("index", index);

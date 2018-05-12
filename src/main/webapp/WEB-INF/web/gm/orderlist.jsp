@@ -67,6 +67,13 @@
 																onclick="excel(1)">导汇总excel</button>
 																</c:if> --%>
 													</div>
+													<div class="col-sm-6 pull-left">
+														<input type="text" value="" id="startTimePicker">
+														-
+														<input type="text" value="" id="endTimePicker">
+														<button type="button" class="btn btn-sm btn-search"
+																onclick="search(${status})">查询</button>
+													</div>
 
 
 													<c:if test="${status== 0}">
@@ -80,7 +87,7 @@
 														</div>
 													</c:if>
 													<c:if test="${status== 2}">
-														<div class="col-sm-4 pull-right" style="text-align: right">
+														<div class="col-sm-4 pull-right" style="text-align: right;vertical-align: top;margin-top:-40px;">
 															<button type="button" class="btn btn-sm btn-success"
 																onclick="$('#importFile').click()">导入结算记录</button>
 
@@ -116,12 +123,16 @@
 																	<th>成交价格（元）</th>
 																</c:if>
 																<th>期权类型</th>
-																<c:if test="${status==2 }">
-																	<th>操作时间</th>
+																<th>操作时间</th>
+																<c:if test="${status==3 }">
+																	<th>结算时间</th>
+																</c:if>
+																<c:if test="${status==1 }">
+																	<th>成交时间</th>
 																</c:if>
 																<th><c:choose>
 																		<c:when test="${status==0 }">
-																操作时间
+																创建时间
 															</c:when>
 																		<c:otherwise>
 																合同时间
@@ -190,8 +201,15 @@
 																	欧式
 																	</c:when>
 																		</c:choose></td>
-																	<c:if test="${status==2 }">
-																		<td>${item.updateTimeFormat }</td>
+																	<td>${item.updateTimeFormat }</td>
+																	<c:if test="${status==3 }">
+																		<td>${item.balanceTimeFormat }</td>
+																	</c:if>
+																	<c:if test="${status==1 }">
+																		<td>${item.dealTimeFormat }</td>
+																	</c:if>
+																	<c:if test="${status==-1 }">
+																		<td>${item.optTimeFormat }</td>
 																	</c:if>
 																	<td><c:choose>
 																			<c:when test="${status==0 }">
@@ -285,7 +303,10 @@
 	<script src="static/inspinia/js/plugins/pace/pace.min.js"></script>
 	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 	<script src="static/inspinia/js/plugins/dataTables/datatables.min.js"></script>
-
+	<script src="static/inspinia/js/plugins/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+	<link href="static/inspinia/js/plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css"
+		  rel="stylesheet">
+	<%--<script src="static/h-ui/js/H-ui.js" charset="UTF-8"></script>--%>
 
 	<script>
 		function reload_page() {
@@ -322,7 +343,6 @@
 				ids.push($(this).val());
 			})
 
-			console.log(ids.join(','));
 			gohref("gm/orderlist?status=${status}&excel=1&hz=" + hz + "&ids="
 					+ ids.join(','));
 		}
@@ -436,6 +456,29 @@
 			}
 
 		}
+		$('#startTimePicker').datetimepicker({
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd',
+            todayBtn:  1,
+            autoclose: 1,
+        });
+		$('#endTimePicker').datetimepicker({
+            minView: "month", //选择日期后，不会再跳转去选择时分秒
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd',
+            todayBtn:  1,
+            autoclose: 1,
+        });
+
+		function search(status){
+			var startTime = $('#startTimePicker').val();
+			// var startTime = $('#startTimePicker').data("datetimepicker").getDate();
+			// var endTime = $('#endTimePicker').data("datetimepicker").getDate();
+			var endTime = $('#endTimePicker').val();
+			window.location.href = "gm/orderlist?status=" + status + "&startTime="+startTime + "&endTime=" + endTime;
+			// console.log("status:" + status + "\nstartTime:" + startTime + "\nendTime:" + endTime);
+        }
 	</script>
 </body>
 

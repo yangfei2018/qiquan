@@ -4,8 +4,8 @@
 	rel="stylesheet">
 <!-- Sweet alert -->
 <script src="static/inspinia/js/plugins/sweetalert/sweetalert.min.js"></script>
-<script src="static/inspinia/js/jquery-3.1.1.min.js"></script>	
-<script src="static/h-ui/js/common.js"></script>	
+<script src="static/inspinia/js/jquery-3.1.1.min.js"></script>
+<script src="static/h-ui/js/common.js"></script>
 
 <div class="row border-bottom">
 	<nav class="navbar navbar-static-top " role="navigation"
