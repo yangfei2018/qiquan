@@ -258,7 +258,7 @@ public class TradeDao {
 		sql.append(" LIMIT ").append((page.getIndex() - 1) * page.getSize()).append(" , ").append(page.getSize());
 
 		System.out.println(sql.toString());
-		List<RechargeRecord> list = jdbcHelper.query("SELECT * " + sql.toString(), new RowMapper<RechargeRecord>() {
+		List<RechargeRecord> list = jdbcHelper.query("SELECT *,'1' as f_name,'2' as f_pcompanyname " + sql.toString(), new RowMapper<RechargeRecord>() {
 			@Override
 			public RechargeRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
 				return new RechargeRecord(rs);
